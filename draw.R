@@ -6,7 +6,7 @@ library(ggplot2)
 library(reshape2)
 
 pdf(outfile, width = 10, height = 6)
-    fq <- read.table(infile, row.names = NULL, header = T)
+    fq <- read.table(infile, row.names = NULL, header = T, skip=3)
     t1 <- melt(fq[1:6], id = "pos")
     ggplot(t1, aes(pos, value, colour = variable)) + geom_line() + xlab("") + ylab("") + scale_colour_hue(name = "Base") + ylim(0,0.6)
 

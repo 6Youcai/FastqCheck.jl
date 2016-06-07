@@ -39,6 +39,13 @@ end
 
 function printArray(inArray::Array{Int64,2}, outfile::ASCIIString)
     f::IOStream = open(outfile, "w")
+    all_base = sum(inArray[1:end, 6:end])
+    q20 = sum(inArray[1:end, 26:end])/all_base
+    q30 = sum(inArray[1:end, 36:end])/all_base
+    print(f, "#base: ", all_base, '\n')
+    print(f, "#Q20: ", q20*100, '\n')
+    print(f, "#Q30: ", q30*100, '\n')
+
     print(f, "pos A T C G N")
     for qual in 0:42
         print(f, " ", qual)
@@ -51,6 +58,9 @@ function printArray(inArray::Array{Int64,2}, outfile::ASCIIString)
         C::Int64 = inArray[pos,3]
         G::Int64 = inArray[pos,4]
         N::Int64 = inArray[pos,5]
+        if A+T+C+G+N == 0 ## 
+            return 0
+        end
         ra::Float64, rt::Float64, rc::Float64, rg::Float64, rn::Float64 = ration(A, T, C, G, N)
         print(f, pos, " ", ra, " ", rt, " ", rc, " ", rg, " ",rn)
         for q_plus in 6:48
@@ -63,15 +73,14 @@ function printArray(inArray::Array{Int64,2}, outfile::ASCIIString)
 end
 
 # main
-    if length(ARGS) != 2
-        info("\n\tUsage:\tjulia <reads.fastq.gz> <read_length>")
+    if length(ARGS) != 1
+        info("\n\tUsage:\tjulia <reads.fastq.gz>")
         exit(-1)
     end
     infile = abspath(ARGS[1])
-    info("the input fastq file is $infile")
-    outfile = string(infile, ".fqcheck")
-    info("the output file is $outfile")
-    reads_len = parse(Int, ARGS[2])
+    name = split(infile, '/')[end]
+    name1 = split(name, '.')[1]
+    outfile = string(name1, ".fqcheck")
+    reads_len = 151 # the longest 
     resultArray = fqcheck(infile, reads_len)
     printArray(resultArray, outfile)
-    info("Done successfully")
