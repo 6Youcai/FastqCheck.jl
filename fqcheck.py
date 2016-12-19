@@ -32,7 +32,6 @@ def fqcheck(infile, read_length = 151):
             qual_in_array = qual + 5 # qual 0 is behind ATCGN
             out_array[i, qual_in_array] += 1
     hand.close()
-    print(out_array) ###
     return(out_array, reads)
 
 def ration(a, t, c, g, n):
@@ -51,7 +50,9 @@ def error_rate(in_array):
         tmp = np.sum(in_array[:, i])
         sum_qual += tmp * i
     qual = sum_qual/all_base
+    print(qual)
     E = 10**(-1*qual/10)
+    return(E)
 
 def printArray(in_array, reads, outfile):
     f = open(outfile, "w")
@@ -64,7 +65,7 @@ def printArray(in_array, reads, outfile):
     # print info
     print("#reads:", reads, "base:", all_base, file = f)
     print("#Q20:", q20, "#Q30:", q30, "#Q40:", q40, file =f)
-    print("#GC content:", gc, "error%:", E, file = f)
+    print("#GC content:", gc, "error:", E, file = f)
     # print header
     print("pos A T C G N ", file = f, end = '') # trim the \n
     for q in range(43):
