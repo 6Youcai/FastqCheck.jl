@@ -83,7 +83,7 @@ function printArray(inArray::Array{Int64,2}, reads, outfile::ASCIIString)
         ra::Float64, rt::Float64, rc::Float64, rg::Float64, rn::Float64 = ration(A, T, C, G, N)
         print(f, pos, " ", ra, " ", rt, " ", rc, " ", rg, " ",rn)
         for q_plus in 6:48
-            qual_count::Int64 = resultArray[pos,q_plus]
+            qual_count::Int64 = inArray[pos,q_plus]
             print(f, " ", qual_count)
         end
         println(f)
