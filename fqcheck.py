@@ -91,8 +91,11 @@ def printArray(in_array, reads, outfile):
     return(1)
 
 if __name__ == "__main__":
+    if sys.version_info < (3,0):
+        print("python2 is not supported, please use python3")
+        sys.exit(-1)
     if len(sys.argv) != 2:
-        print("\n\tUsage:\tpython3 <reads.fastq.gz>")
+        print("\n\tUsage:\tpython3 fqcheck.py <reads.fastq.gz>")
         exit(-1)
     infile = os.path.abspath(sys.argv[1])
     file_name = os.path.split(infile)[1]
